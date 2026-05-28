@@ -1,0 +1,7 @@
+services:
+  - type: worker
+    name: telegram-bot
+    runtime: docker
+    envVars:
+      - key: 8680623688:AAHaXKiRee6hY2ZF8GhXyH156A9iexIn6BY
+        sync: false
