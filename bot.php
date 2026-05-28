@@ -6,7 +6,7 @@ require 'madeline.php';
 const DOWNLOADS_DIR = __DIR__ . '/downloads';
 const DB_PATH       = __DIR__ . '/files.db';
 
-$token = getenv('8680623688:AAHaXKiRee6hY2ZF8GhXyH156A9iexIn6BY');
+$token =('8680623688:AAHaXKiRee6hY2ZF8GhXyH156A9iexIn6BY');
 if (!$token) die("BOT_TOKEN env yo'q\n");
 
 /* ─── DB ──────────────────────────────────────────────────── */
