@@ -5,3 +5,7 @@ services:
     envVars:
       - key: 8680623688:AAHaXKiRee6hY2ZF8GhXyH156A9iexIn6BY
         sync: false
+      - key: 27605865
+        sync: false
+      - key: f76cf301b264391c6ed01747638adecc
+        sync: false
