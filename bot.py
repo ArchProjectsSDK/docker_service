@@ -1,16 +1,16 @@
 import os
 import sqlite3
-import asyncio
 from datetime import datetime
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
-BOT_TOKEN = os.getenv("8680623688:AAHaXKiRee6hY2ZF8GhXyH156A9iexIn6BY")
-API_ID    = int(os.getenv("27605865"))
-API_HASH  = os.getenv("f76cf301b264391c6ed01747638adecc")
+BOT_TOKEN = "8680623688:AAHaXKiRee6hY2ZF8GhXyH156A9iexIn6BY"
+API_ID    = 27605865
+API_HASH  = "f76cf301b264391c6ed01747638adecc"
 
 DOWNLOADS_DIR = "downloads"
 DB_PATH       = "files.db"
+BASE_URL      = os.getenv("BASE_URL", "https://docker-service-sfik.onrender.com")
 
 os.makedirs(DOWNLOADS_DIR, exist_ok=True)
 
@@ -62,7 +62,6 @@ db  = get_db()
 
 @app.on_message(filters.audio | filters.voice | filters.document)
 async def handle_audio(client: Client, msg: Message):
-    # Document bo'lsa faqat audio mime type
     if msg.document:
         mime = msg.document.mime_type or ""
         if not mime.startswith("audio/"):
@@ -73,7 +72,7 @@ async def handle_audio(client: Client, msg: Message):
         print(f"[SKIP] msg={msg.id}")
         return
 
-    media = msg.audio or msg.voice or msg.document
+    media     = msg.audio or msg.voice or msg.document
     file_name = getattr(media, "file_name", None) or f"audio_{msg.id}.ogg"
     duration  = getattr(media, "duration", 0) or 0
     size      = getattr(media, "file_size", 0) or 0
@@ -97,18 +96,33 @@ async def handle_audio(client: Client, msg: Message):
 
         print(f"[OK] {file_name}")
 
+        # Fayl URL ini yuborish
+        file_url = f"{BASE_URL}/files/{file_name}"
         await msg.reply(
             f"✅ Saqlandi!\n\n"
             f"📁 {file_name}\n"
             f"⏱ {duration}s\n"
-            f"📦 {round(size / 1024 / 1024, 2)} MB"
+            f"📦 {round(size / 1024 / 1024, 2)} MB\n"
+            f"🔗 {file_url}"
         )
 
     except Exception as e:
         print(f"[ERROR] {e}")
         await msg.reply("❌ Xatolik yuz berdi.")
 
-@app.on_message(filters.text)
+@app.on_message(filters.command("sql"))
+async def handle_sql(client: Client, msg: Message):
+    try:
+        await client.send_document(
+            chat_id=msg.chat.id,
+            document=DB_PATH,
+            caption="🗄 files.db",
+            reply_to_message_id=msg.id
+        )
+    except Exception as e:
+        await msg.reply(f"❌ DB yuborishda xatolik: {e}")
+
+@app.on_message(filters.text & ~filters.command(["sql"]))
 async def handle_text(client: Client, msg: Message):
     await msg.reply("🎵 Menga faqat audio, voice yoki audio fayl yuboring.")
 
