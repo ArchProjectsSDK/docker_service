@@ -5,9 +5,9 @@ from datetime import datetime
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-API_ID    = int(os.getenv("API_ID"))
-API_HASH  = os.getenv("API_HASH")
+BOT_TOKEN = os.getenv("8680623688:AAHaXKiRee6hY2ZF8GhXyH156A9iexIn6BY")
+API_ID    = int(os.getenv("27605865"))
+API_HASH  = os.getenv("f76cf301b264391c6ed01747638adecc")
 
 DOWNLOADS_DIR = "downloads"
 DB_PATH       = "files.db"
