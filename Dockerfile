@@ -1,19 +1,12 @@
-FROM php:8.2-cli
-
-RUN apt-get update && apt-get install -y \
-    libsqlite3-dev \
-    libzip-dev \
-    unzip \
-    wget \
-    && docker-php-ext-install pdo pdo_sqlite zip \
-    && rm -rf /var/lib/apt/lists/*
+FROM python:3.11-slim
 
 WORKDIR /app
 
-RUN wget https://phar.madelineproto.xyz/madeline.php
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
 RUN mkdir -p downloads
 
-CMD ["php", "bot.php"]
+CMD ["python", "bot.py"]
